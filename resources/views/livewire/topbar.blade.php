@@ -38,7 +38,7 @@
             </summary>
 
             <ul
-                    class="menu menu-md z-[9999] dropdown-content bg-base-200 rounded-xl shadow-lg border border-base-300 p-2 w-52 mt-2 right-0 text-gray-700"
+                    class="menu menu-md z-[9999] dropdown-content bg-base-200 rounded-xl shadow-lg border border-base-300 p-2 w-52 -mt-2 right-0 text-gray-700"
             >
                 <li>
                     <a href="/preferences" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-base-300 transition">

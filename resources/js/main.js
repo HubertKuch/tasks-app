@@ -50,3 +50,11 @@ waitForElement(".tasks-container", (container) => {
         })
 });
 
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('details').forEach(details => {
+        details.addEventListener('mouseenter', () => details.setAttribute('open', ''));
+        details.addEventListener('mouseleave', () => details.removeAttribute('open'));
+    });
+});

@@ -1,7 +1,61 @@
-<div class="w-full  p-3 bg-base-100/70 border border-base-300 rounded-2xl shadow-sm flex items-center justify-between hover:shadow-lg transition-shadow duration-300">
+<div class="w-full p-3 bg-base-100/70 border border-base-300 rounded-2xl shadow-sm flex items-center justify-between hover:shadow-lg transition-shadow duration-300">
 
-    <div class="flex items-center gap-4">
-        <!-- Status Icon -->
+    <dialog id="dialog_{{$task->id}}_task_modal" class="modal modal-open:bg-black/40 backdrop-blur-sm">
+        <form wire:submit="editTask" class="modal-box max-w-md rounded-xl bg-base-100 shadow-xl p-6">
+            <input type="hidden" name="task_id" wire:model="form.id">
+            <input
+                wire:model="form.title"
+                value="{{$task->title}}"
+                type="text"
+                class="input input-bordered w-full text-lg font-semibold mb-4"
+                placeholder="Task Title"
+                name="title"
+                autofocus
+            />
+
+            <textarea
+                wire:model="form.description"
+                class="textarea textarea-bordered w-full min-h-[150px] resize-none mb-6 text-gray-700"
+                readonly
+                contenteditable="true"
+                placeholder="{{$task->description ?: 'Provide description here'}}"
+            >{{$task->description ?: ''}}</textarea>
+
+            <div>
+                <label class="label text-xs font-semibold text-gray-500">Status</label>
+                <select
+                    wire:model="form.status"
+                    name="status" class="select select-bordered w-full">
+                    <option value="to-do" @selected($task->status === 'to-do')>To-do</option>
+                    <option value="in-progress" @selected($task->status === 'in-progress')>In Progress</option>
+                    <option value="done" @selected($task->status === 'done')>Done</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="label text-xs font-semibold text-gray-500">Priority</label>
+                <select
+                    wire:model="form.priority"
+
+                    name="priority" class="select select-bordered w-full">
+                    <option value="low" @selected($task->priority === 'low')>Low</option>
+                    <option value="medium" @selected($task->priority === 'medium')>Medium</option>
+                    <option value="high" @selected($task->priority === 'high')>High</option>
+                </select>
+            </div>
+
+            <div class="modal-action justify-end">
+                <button type="submit" class="btn btn-primary btn-sm px-6">
+                    Save
+                </button>
+                <button type="submit" class="btn btn-secondary btn-sm px-6">
+                    Close
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <div class="flex items-center gap-4" onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').showModal()">
         <div class="w-3 h-3 rounded-full
             {{ $task->status->value === 'done' ? 'bg-success' : ($task->status->value === 'in-progress' ? 'bg-yellow-400' : 'bg-gray-400') }}">
         </div>
@@ -28,7 +82,7 @@
         <div class="dropdown-content bg-base-100 rounded-2xl shadow-lg border border-base-300 p-1 fade-in">
             <ul class="menu menu-sm min-w-[9rem] z-40">
                 <li>
-                    <a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition-colors duration-150 cursor-pointer">
+                    <a  onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').showModal()" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition-colors duration-150 cursor-pointer">
                         <iconify-icon class="text-blue-500" icon="mdi:pencil-outline"></iconify-icon>
                         <span>Edit</span>
                     </a>

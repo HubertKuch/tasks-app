@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <div class="flex gap-3 w-full">
+            <div class="flex flex-col gap-3 w-full">
                 <div>
                 <span class="badge badge-accent rounded-lg px-6 py-2 text-lg font-semibold shadow-md">
                   In-progress
