@@ -1,0 +1,18 @@
+:root {
+    --background-color: #ffffff;
+    --white: #fff;
+    --text-color-base: rgb(29, 29, 31);
+    --text-color-secondary: #6e6e73;
+    --color-link: rgb(0, 102, 204);
+
+    --btn-bg: #0071e3;
+    --btn-hover: #0077ed;
+
+    --app-height: 100vh;
+
+    --heading-size: 40px;
+    --font-size: 1rem;
+    --line-height: 25px;
+    --letter-spacing: 0.007em;
+    --font-feature: kern;
+}

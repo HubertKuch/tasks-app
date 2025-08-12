@@ -1,8 +1,6 @@
 <?php
 
-use App\Livewire\CreatePost;
+use App\Livewire\MainView;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('components.layouts.app');
-});
+Route::get('/', MainView::class);

@@ -1,4 +1,55 @@
 @import 'tailwindcss';
+@import "./specification.css";
+@plugin "daisyui" {
+    themes: light --default, dark --prefersdark;
+}
+
+@plugin "daisyui/theme" {
+    name: "light";
+    default: true;
+
+    /* colors */
+    --color-base-100: rgb(241, 241, 244);
+    --color-base-200: rgb(231, 231, 236);
+    --color-base-300: rgb(216, 216, 224);
+
+    --color-base-content: var(--text-color-base);
+
+    --color-primary: #3cd3fe;
+    --color-primary-content: var(--white);
+    --color-secondary: oklch(70% 0.25 200);
+    --color-secondary-content: oklch(98% 0.01 200);
+    --color-accent: #00c3d0;
+    --color-accent-content: oklch(98% 0.01 160);
+    --color-neutral: oklch(50% 0.05 240);
+    --color-neutral-content: oklch(98% 0.01 240);
+    --color-info: oklch(70% 0.2 220);
+    --color-info-content: oklch(98% 0.01 220);
+    --color-success: oklch(65% 0.25 140);
+    --color-success-content: oklch(98% 0.01 140);
+    --color-warning: oklch(80% 0.25 80);
+    --color-warning-content: oklch(20% 0.05 80);
+    --color-error: #ff383c;
+    --color-error-content: oklch(98% 0.01 30);
+
+    /* border radius */
+    --radius-selector: 1rem;
+    --radius-field: 0.25rem;
+    --radius-box: 0.5rem;
+
+    /* base sizes */
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+
+    /* border size */
+    --border: 1px;
+
+    /* effects */
+    --depth: 1;
+    --noise: 0;
+}
+
+@custom-variant dark (&:where([data-theme=night], [data-theme=night] *));
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -7,12 +58,44 @@
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
 html, body {
     padding: 0;
     margin: 0;
-    height: 100%;
+    height: var(--app-height);
     width: 100%;
+
+    color: var(--text-color-base);
+
+    transition: all;
+    transition-duration: 245ms;
 }
+
+.btn.btn-primary {
+    background: var(--btn-bg);
+}
+
+.btn.btn-primary:hover {
+    color: var(--btn-hover);
+}
+
+.inline-link {
+    color: var(--color-link);
+}
+
+.secondary-text {
+    color: var(--text-color-secondary);
+}
+
+h1.title {
+    font-size: var(--heading-size);
+}
+
+p {
+    line-height: var(--line-height);
+    letter-spacing: var(--letter-spacing);
+}
+
+
