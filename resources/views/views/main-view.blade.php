@@ -1,8 +1,9 @@
 <div class="app-container w-full h-full flex bg-white min-h-screen">
-    <livewire:side-bar tasks-count="{{ $all_tasks_count }}"/>
+    @livewire('side-bar', ['tasksCount' => $state["all_tasks_count"]])
+
 
     <main class="flex-1 flex flex-col h-full">
-        <livewire:topbar/>
+        @livewire('topbar')
 
         <section class="tasks-container p-6 flex gap-4 h-full overflow-y-auto" data-view="board">
             <div class="flex flex-col gap-3 w-full">
@@ -13,8 +14,8 @@
                 </div>
 
                 <div class="flex flex-col gap-4">
-                    @foreach ($done_tasks as $task)
-                        @livewire('single-task-list-view', ['task' => $task])
+                    @foreach ($state['done_tasks'] as $task)
+                        @livewire('singletask', ['task' => $task], key('done-'.$task->id))
                     @endforeach
                 </div>
             </div>
@@ -27,8 +28,8 @@
                 </div>
 
                 <div class="flex flex-col gap-4">
-                    @foreach ($in_progress_tasks as $task)
-                        @livewire('single-task-list-view', ['task' => $task])
+                    @foreach ($state["in_progress_tasks"] as $task)
+                        @livewire('singletask', ['task' => $task], key('in-progress-'.$task->id))
                     @endforeach
                 </div>
             </div>
@@ -41,8 +42,8 @@
                 </div>
 
                 <div class="flex flex-col gap-4">
-                    @foreach ($todo_tasks as $task)
-                        @livewire('single-task-list-view', ['task' => $task])
+                    @foreach ($state["todo_tasks"] as $task)
+                        @livewire('singletask', ['task' => $task], key('todo-'.$task->id))
                     @endforeach
                 </div>
             </div>

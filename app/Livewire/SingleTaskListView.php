@@ -21,5 +21,6 @@ class SingleTaskListView extends Component
     public function editTask(): void
     {
         $this->form->store();
+        $this->dispatch('refresh')->to(MainView::class);;
     }
 }

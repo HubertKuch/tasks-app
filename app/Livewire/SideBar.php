@@ -10,8 +10,6 @@ class SideBar extends Component
 
     public function render()
     {
-        return view('livewire.side-bar', [
-            "all_tasks_count" => $this->tasksCount
-        ]);
+        return view('livewire.side-bar');
     }
 }

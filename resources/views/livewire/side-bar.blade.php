@@ -21,7 +21,7 @@
                     class="inline-flex items-center justify-center min-w-[1.6rem] min-h-[1.6rem] text-[0.65rem] font-semibold rounded-full bg-base-300 text-gray-700 shadow-sm"
                     aria-label="Total tasks count"
                 >
-                    {{ $all_tasks_count }}
+                    {{ $tasksCount }}
                 </div>
             </div>
         </div>

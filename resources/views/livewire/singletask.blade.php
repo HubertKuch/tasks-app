@@ -1,11 +1,49 @@
-<div class="w-full p-3 bg-base-100/70 border border-base-300 rounded-2xl shadow-sm flex items-center justify-between hover:shadow-lg transition-shadow duration-300">
+<?php
+
+use App\Enums\TaskStatus;
+use App\Livewire\Forms\TaskEditForm;
+use App\Models\Task;
+use function Livewire\Volt\{form, mount, state};
+
+state(['task'])->reactive();
+
+form(TaskEditForm::class);
+
+mount(function () {
+    $this->form->setTask($this->task);
+});
+
+$edit = function (Task $taskToUpdate) {
+    $taskToUpdate->update([
+        "title" => $this->form->title,
+        "status" => $this->form->status,
+        "description" => $this->form->description,
+        "priority" => $this->form->priority
+    ]);
+
+    $this->dispatch('refresh');
+};
+
+$markAsDone = function (Task $completedTask) {
+    $completedTask->update([
+        "status" => TaskStatus::Done
+    ]);
+
+    $this->dispatch("refresh");
+};
+
+?>
+
+<div
+    class="w-full p-3 bg-base-100/70 border border-base-300 rounded-2xl shadow-sm flex items-center justify-between hover:shadow-lg transition-shadow duration-300">
 
     <dialog id="dialog_{{$task->id}}_task_modal" class="modal modal-open:bg-black/40 backdrop-blur-sm">
-        <form wire:submit.prevent="editTask" class="modal-box max-w-md rounded-xl bg-base-100 shadow-xl p-6">
-            <input type="hidden" name="task_id" wire:model="form.id">
+        <form method="dialog" wire:submit="edit({{$task->id}})"
+              class="modal-box max-w-md rounded-xl bg-base-100 shadow-xl p-6">
+            @csrf
+            <input type="hidden" name="task_id" wire:model="task.id">
             <input
                 wire:model="form.title"
-                value="{{$task->title}}"
                 type="text"
                 class="input input-bordered w-full text-lg font-semibold mb-4"
                 placeholder="Task Title"
@@ -16,10 +54,8 @@
             <textarea
                 wire:model="form.description"
                 class="textarea textarea-bordered w-full min-h-[150px] resize-none mb-6 text-gray-700"
-                readonly
                 contenteditable="true"
-                placeholder="{{$task->description ?: 'Provide description here'}}"
-            >{{$task->description ?: ''}}</textarea>
+            ></textarea>
 
             <div>
                 <label class="label text-xs font-semibold text-gray-500">Status</label>
@@ -45,17 +81,20 @@
             </div>
 
             <div class="modal-action justify-end">
-                <button type="button" class="btn btn-primary btn-sm px-6">
+                <button onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').close()" type="submit"
+                        class="btn btn-primary btn-sm px-6">
                     Save
                 </button>
-                <button type="submit" class="btn btn-secondary btn-sm px-6">
+                <button type="button" onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').close()"
+                        class="btn btn-secondary btn-sm px-6">
                     Close
                 </button>
             </div>
         </form>
     </dialog>
 
-    <div class="flex items-center gap-4" onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').showModal()">
+    <div class="flex items-center gap-4"
+         onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').showModal()">
         <div class="w-3 h-3 rounded-full
             {{ $task->status->value === 'done' ? 'bg-success' : ($task->status->value === 'in-progress' ? 'bg-yellow-400' : 'bg-gray-400') }}">
         </div>
@@ -82,13 +121,14 @@
         <div class="dropdown-content bg-base-100 rounded-2xl shadow-lg border border-base-300 p-1 fade-in">
             <ul class="menu menu-sm min-w-[9rem] z-40">
                 <li>
-                    <a  onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').showModal()" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition-colors duration-150 cursor-pointer">
+                    <a onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').showModal()"
+                       class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition-colors duration-150 cursor-pointer">
                         <iconify-icon class="text-blue-500" icon="mdi:pencil-outline"></iconify-icon>
                         <span>Edit</span>
                     </a>
                 </li>
                 <li>
-                    <a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition-colors duration-150 cursor-pointer">
+                    <a wire:click="markAsDone({{$task->id}})" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition-colors duration-150 cursor-pointer">
                         <iconify-icon class="text-green-500" icon="mdi:check-circle-outline"></iconify-icon>
                         <span>Mark as Done</span>
                     </a>
@@ -103,3 +143,4 @@
         </div>
     </details>
 </div>
+
