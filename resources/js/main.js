@@ -32,3 +32,21 @@ waitForElement("button.toggle-sidebar", (toggler) => {
     });
 });
 
+waitForElement(".tasks-container", (container) => {
+    const tabs = [...document.querySelectorAll(".tabs-nav-container [data-set-view]")];
+
+    tabs.forEach((item) => {
+
+            item.addEventListener("click", (e) => {
+                tabs.forEach(tab => tab.classList.remove("active-tab"));
+
+                const setTo = item.getAttribute("data-set-view");
+
+                container.setAttribute("data-view", setTo);
+
+                e.currentTarget.classList.add("active-tab");
+            })
+
+        })
+});
+

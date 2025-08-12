@@ -8,10 +8,15 @@
         <iconify-icon icon="octicon:sidebar-collapse-16" class="w-5 h-5 sidebar__collapse"></iconify-icon>
     </button>
 
-    <ul class="flex items-center gap-2">
+    <ul class="flex items-center tabs-nav-container tasks-view-nav gap-2">
         <li>
-            <div class="bg-base-200 rounded-lg px-4 py-1 text-sm font-semibold text-gray-700 hover:bg-base-300 transition">
+            <div data-set-view="list" class="tab-item rounded-lg px-4 py-1 text-sm font-semibold  hover:bg-base-300 transition">
                 List
+            </div>
+        </li>
+        <li>
+            <div data-set-view="board" class="tab-item active-tab rounded-lg px-4 py-1 text-sm font-semibold hover:bg-base-300 transition">
+                Board
             </div>
         </li>
     </ul>
