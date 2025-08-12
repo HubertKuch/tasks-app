@@ -3,10 +3,21 @@
     <main>
         <livewire:topbar></livewire:topbar>
 
-{{--        @foreach ($done_tasks as $task)--}}
-{{--            <div wire:key="{{$task->id}}">--}}
-{{--                {{$task->status}}--}}
-{{--            </div>--}}
-{{--        @endforeach--}}
+        <div class="p-5">
+            <div>
+                <div>
+                    <span class="badge badge-success rounded-sm pl-8 pr-8">
+                        Done
+                    </span>
+                </div>
+
+                <div class="flex gap-2 flex-col">
+                    @foreach ($done_tasks as $task)
+                        @livewire('single-task-list-view', ['task' => $task])
+                    @endforeach
+                </div>
+            </div>
+
+        </div>
     </main>
 </div>

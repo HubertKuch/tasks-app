@@ -33,7 +33,7 @@
     --color-neutral-content: oklch(98% 0.01 240);
     --color-info: oklch(70% 0.2 220);
     --color-info-content: oklch(98% 0.01 220);
-    --color-success: oklch(65% 0.25 140);
+    --color-success: #34c759;
     --color-success-content: oklch(98% 0.01 140);
     --color-warning: oklch(80% 0.25 80);
     --color-warning-content: oklch(20% 0.05 80);
@@ -109,6 +109,7 @@ p {
 }
 
 .inline-icon {
+    display: inline-block;
     vertical-align: text-bottom;
 }
 
@@ -153,4 +154,8 @@ summary {
 
 .non-active-default-text {
     color: var(--color-neutral);
+}
+
+@utility scale-pulse {
+    scale: 101%;
 }
