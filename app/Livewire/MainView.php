@@ -3,12 +3,14 @@
 namespace App\Livewire;
 
 use App\Enums\TaskStatus;
+use App\Models\Task;
 use Auth;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use function Termwind\render;
 
 class MainView extends Component
 {
@@ -22,16 +24,48 @@ class MainView extends Component
     #[On('refresh')]
     public function refresh(): void
     {
-        \Illuminate\Log\log("test refresh pls work that time");
         $this->reFetchState();
     }
+
+    #[On("deleteTask")]
+    public function deleteFromDom($taskId, $status): void
+    {
+        $authedUser = Auth::user();
+
+        if ($status === TaskStatus::ToDo->value) {
+            $this->state["todo_tasks"] = $authedUser->tasks()->get()
+                -> where('status', TaskStatus::ToDo)
+                -> whereNotIn('id', $taskId)
+                -> all();
+        } else if ($status === TaskStatus::InProgress->value) {
+            $this->state["in_progress_tasks"] = $authedUser->tasks()->get()
+                ->where('status', TaskStatus::ToDo)
+                ->whereNotIn('id', $taskId)
+                ->all();
+        } else if ($status === TaskStatus::Done->value) {
+            $this->state["done_tasks"] = $authedUser->tasks()->get()
+                -> where('status', TaskStatus::ToDo)
+                -> whereNotIn('id', $taskId)
+                -> all();
+        }
+
+        $this->dispatch("postDeleteTaskFromDom", taskId: $taskId);
+    }
+
+    #[On("postDeleteTaskFromDom")]
+    public function postDeleteFromDom($taskId)
+    {
+        Task::find($taskId)->deleteQuietly();
+    }
+
 
     public function mount(): void
     {
         $this->reFetchState();
     }
 
-    public function reFetchState(): void {
+    public function reFetchState(): void
+    {
         $authedUser = Auth::user();
 
         $this->state = [

@@ -1,7 +1,6 @@
 <div class="app-container w-full h-full flex bg-white min-h-screen">
     @livewire('side-bar', ['tasksCount' => $state["all_tasks_count"]])
 
-
     <main class="flex-1 flex flex-col h-full">
         @livewire('topbar')
 
