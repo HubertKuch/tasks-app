@@ -20,6 +20,7 @@ $createTask = function () {
         ...$this->form->all()
     ]);
 
+    $this->js("TasksApp.toast('Task created')");
     $this->dispatch("refresh");
 };
 

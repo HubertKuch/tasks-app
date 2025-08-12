@@ -31,7 +31,7 @@
     --color-accent-content: oklch(98% 0.01 160);
     --color-neutral: rgb(50, 48, 44);
     --color-neutral-content: oklch(98% 0.01 240);
-    --color-info: oklch(70% 0.2 220);
+    --color-info: #64B5F6;
     --color-info-content: oklch(98% 0.01 220);
     --color-success: #34c759;
     --color-success-content: oklch(98% 0.01 140);
@@ -211,4 +211,10 @@ summary {
 
 .tasks-container[data-view="list"] {
     @apply flex-col;
+}
+
+.toast-info {
+    color: var(--color-neutral) !important;
+    background: var(--color-info) !important;
+    @apply shadow-lg rounded-md;
 }
