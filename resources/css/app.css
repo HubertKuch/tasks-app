@@ -175,3 +175,17 @@ summary {
     animation: fadeIn 0.3s ease-out forwards;
 }
 
+.dropdown.dropdown-end:not([open]) .dropdown-content {
+    display: none;
+}
+
+.sidebar.active {
+    display: block;
+    opacity: 1;
+}
+
+.sidebar:not(.active) {
+    opacity: 0;
+    display: none;
+}
+
