@@ -1,5 +1,11 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 @import "./specification.css";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/';
+@source '../**/*.js';
+
 @plugin "daisyui" {
     themes: light --default, dark --prefersdark;
 }
@@ -51,11 +57,6 @@
 
 @custom-variant dark (&:where([data-theme=night], [data-theme=night] *));
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
-
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
@@ -66,11 +67,13 @@ html, body {
     margin: 0;
     height: var(--app-height);
     width: 100%;
-
     color: var(--text-color-base);
+}
 
+* {
+    box-sizing: border-box;
     transition: all;
-    transition-duration: 245ms;
+    transition-duration: 175ms;
 }
 
 .btn.btn-primary {
@@ -98,4 +101,24 @@ p {
     letter-spacing: var(--letter-spacing);
 }
 
+.inline-icon {
+    vertical-align: text-bottom;
+}
 
+@utility bg-secondary {
+    background: color-mix(in oklab, #e7e2e3 90%, transparent)
+}
+
+.hover-bg:hover {
+    @apply bg-base-300 rounded-lg;
+}
+
+.sidebar {
+    flex-basis: clamp(22ch, 15%, 100%);
+}
+
+.app-container main {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-inline-size: 50%;
+}

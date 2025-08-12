@@ -6,6 +6,7 @@
 
         <title>{{ $title ?? 'Todo app' }}</title>
         @vite('resources/css/app.css')
+        <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
     </head>
     <body data-theme="light">
         {{ $slot }}
