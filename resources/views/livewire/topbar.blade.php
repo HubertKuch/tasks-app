@@ -8,10 +8,11 @@
             <button class="btn btn-ghost bg-base-200 secondary-text rounded h-fit">List</button>
         </li>
     </ul>
-    <div class="w-8 h-full text-center pt-1 cursor-pointer ">
+    <div class="w-fit h-full text-center pt-1 cursor-pointer flex-as-row">
+        <iconify-icon class="inline-icon secondary-text hover:bg-base-200 p-1 rounded" icon="octicon:plus-circle-16"></iconify-icon>
         <details class="dropdown dropdown-end">
             <summary>
-                <iconify-icon class="inline-icon secondary-text hover:bg-base-200 p-1"
+                <iconify-icon class="rounded inline-icon secondary-text hover:bg-base-200 p-1"
                               icon="octicon:gear-16"></iconify-icon>
             </summary>
             <ul class="menu text-sm text-neutral dropdown-content hover:shadow-3xl bg-base-200 glass backdrop-blur-3xl z-10 w-52 p-2 shadow right-2 -mt-1">
