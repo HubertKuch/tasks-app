@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Forms;
 
+use App\Enums\TaskPriority;
+use App\Enums\TaskStatus;
 use App\Models\Task;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -12,8 +14,8 @@ class TaskEditForm extends Form
     #[Validate('required|min:2')]
     public $title = '';
     public $description = '';
-    public $status;
-    public $priority;
+    public $status = TaskStatus::ToDo;
+    public $priority = TaskPriority::Low;
 
     public Task $task;
 
