@@ -127,12 +127,14 @@ $markAsDone = function (Task $completedTask) {
                         <span>Edit</span>
                     </a>
                 </li>
-                <li>
-                    <a wire:click="markAsDone({{$task->id}})" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition-colors duration-150 cursor-pointer">
-                        <iconify-icon class="text-green-500" icon="mdi:check-circle-outline"></iconify-icon>
-                        <span>Mark as Done</span>
-                    </a>
-                </li>
+                @if($task->status !== TaskStatus::Done)
+                    <li>
+                        <a wire:click="markAsDone({{$task->id}})" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition-colors duration-150 cursor-pointer">
+                            <iconify-icon class="text-green-500" icon="mdi:check-circle-outline"></iconify-icon>
+                            <span>Mark as Done</span>
+                        </a>
+                    </li>
+                @endif
                 <li>
                     <a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition-colors duration-150 cursor-pointer">
                         <iconify-icon class="text-red-500" icon="octicon:trash-24"></iconify-icon>
