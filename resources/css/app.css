@@ -14,10 +14,13 @@
     name: "light";
     default: true;
 
+
     /* colors */
     --color-base-100: rgb(241, 241, 244);
     --color-base-200: rgb(231, 231, 236);
     --color-base-300: rgb(216, 216, 224);
+
+
 
     --color-base-content: var(--text-color-base);
 
@@ -92,6 +95,10 @@ html, body {
     color: var(--text-color-secondary);
 }
 
+.btn-active {
+    color: #777777;
+}
+
 h1.title {
     font-size: var(--heading-size);
 }
@@ -107,6 +114,15 @@ p {
 
 @utility bg-secondary {
     background: color-mix(in oklab, #e7e2e3 90%, transparent)
+}
+
+@utility flex-as-row {
+    display: flex;
+    flex-direction: row;
+}
+
+@utility default-border {
+    @apply border-gray-300/80;
 }
 
 .hover-bg:hover {
