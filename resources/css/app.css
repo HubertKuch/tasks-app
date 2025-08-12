@@ -21,7 +21,6 @@
     --color-base-300: rgb(216, 216, 224);
 
 
-
     --color-base-content: var(--text-color-base);
 
     --color-primary: #3cd3fe;
@@ -30,7 +29,7 @@
     --color-secondary-content: oklch(98% 0.01 200);
     --color-accent: #00c3d0;
     --color-accent-content: oklch(98% 0.01 160);
-    --color-neutral: oklch(50% 0.05 240);
+    --color-neutral: rgb(50, 48, 44);
     --color-neutral-content: oklch(98% 0.01 240);
     --color-info: oklch(70% 0.2 220);
     --color-info-content: oklch(98% 0.01 220);
@@ -142,4 +141,16 @@ p {
 
 .error {
     color: var(--color-error);
+}
+
+::marker {
+    display: none;
+}
+
+summary {
+    list-style: none
+}
+
+.non-active-default-text {
+    color: var(--color-neutral);
 }
