@@ -9,14 +9,12 @@ use App\Livewire\RegisterSuccessView;
 use App\Livewire\RegisterView;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware([AuthMiddleware::class])
-->group(function () {
+Route::middleware([AuthMiddleware::class])->group(function () {
     Route::get('/', MainView::class);
 
     Route::get('/logout', [LoginController::class, 'logout']);
 });
 
-Route::get('/', MainView::class);
 Route::get('/login', LoginView::class);
 Route::get('/register', RegisterView::class);
 Route::get("/register-success", RegisterSuccessView::class);
