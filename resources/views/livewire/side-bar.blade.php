@@ -7,7 +7,7 @@
                     All
                 </div>
                 <div>
-                    0
+                    {{$all_tasks_count}}
                 </div>
             </div>
         </div>
