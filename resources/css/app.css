@@ -189,3 +189,6 @@ summary {
     display: none;
 }
 
+.divider {
+    height: 2px;
+}

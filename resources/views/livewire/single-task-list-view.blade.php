@@ -18,7 +18,7 @@
     </div>
 
     <details class="dropdown dropdown-end">
-        <summary class="list-none p-2 rounded-xl hover:bg-base-200 transition-colors duration-200 cursor-pointer">
+        <summary class="list-none p-2 rounded-xl z-10 hover:bg-base-200 transition-colors duration-200 cursor-pointer">
             <iconify-icon
                 class="inline-icon cursor-pointer text-xl text-gray-600 hover:text-gray-900 transition-colors duration-200 z-10"
                 icon="octicon:three-bars-24">
