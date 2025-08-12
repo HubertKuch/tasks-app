@@ -32,6 +32,12 @@ $markAsDone = function (Task $completedTask) {
     $this->dispatch("refresh");
 };
 
+$deleteTask = function (Task $taskToDelete) {
+    $taskToDelete->delete();
+
+    $this->dispatch("refresh");
+}
+
 ?>
 
 <div
@@ -136,7 +142,7 @@ $markAsDone = function (Task $completedTask) {
                     </li>
                 @endif
                 <li>
-                    <a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition-colors duration-150 cursor-pointer">
+                    <a wire:click="deleteTask({{$task->id}})" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition-colors duration-150 cursor-pointer">
                         <iconify-icon class="text-red-500" icon="octicon:trash-24"></iconify-icon>
                         <span>Delete</span>
                     </a>
