@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
 use App\Livewire\LoginView;
 use App\Livewire\MainView;
 use App\Livewire\RegisterSuccessView;
@@ -14,3 +15,5 @@ Route::get("/register-success", RegisterSuccessView::class);
 
 // auth
 Route::post("/login", [LoginController::class, "authenticate"]);
+Route::post("/register", [RegisterController::class, "register"]);
+

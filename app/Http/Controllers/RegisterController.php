@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Database\Factories\UserFactory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,9 @@ class RegisterController extends Controller
             return back()->withErrors(['error' => 'Password must be the same']);
         }
 
-        User::create(['email' => $data['email'], "password" => $data["password"], "email_verified_at" => now()]);
+        User::factory()
+            ->make(['email' => $data['email'], "password" => $data["password"]])
+            ->save();
 
         return redirect('/register-success');
     }
