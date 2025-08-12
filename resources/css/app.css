@@ -21,20 +21,19 @@
     --color-base-300: rgb(216, 216, 224);
 
 
-
     --color-base-content: var(--text-color-base);
 
-    --color-primary: #3cd3fe;
+    --color-primary: var(--btn-bg);
     --color-primary-content: var(--white);
-    --color-secondary: oklch(70% 0.25 200);
+    --color-secondary: #9e9ea3;
     --color-secondary-content: oklch(98% 0.01 200);
-    --color-accent: #00c3d0;
+    --color-accent: #5a43d6;
     --color-accent-content: oklch(98% 0.01 160);
-    --color-neutral: oklch(50% 0.05 240);
+    --color-neutral: rgb(50, 48, 44);
     --color-neutral-content: oklch(98% 0.01 240);
     --color-info: oklch(70% 0.2 220);
     --color-info-content: oklch(98% 0.01 220);
-    --color-success: oklch(65% 0.25 140);
+    --color-success: #34c759;
     --color-success-content: oklch(98% 0.01 140);
     --color-warning: oklch(80% 0.25 80);
     --color-warning-content: oklch(20% 0.05 80);
@@ -97,7 +96,7 @@ html, body {
 }
 
 .btn-active {
-    color: #777777;
+    color: rgba(119, 119, 119, 0.72);
 }
 
 h1.title {
@@ -110,6 +109,7 @@ p {
 }
 
 .inline-icon {
+    display: inline-block;
     vertical-align: text-bottom;
 }
 
@@ -142,4 +142,73 @@ p {
 
 .error {
     color: var(--color-error);
+}
+
+::marker {
+    display: none;
+}
+
+summary {
+    list-style: none
+}
+
+.non-active-default-text {
+    color: var(--color-neutral);
+}
+
+@utility scale-pulse {
+    scale: 101%;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+.dropdown.dropdown-end:not([open]) .dropdown-content {
+    display: none;
+}
+
+.sidebar.active {
+    display: block;
+    opacity: 1;
+}
+
+.sidebar:not(.active) {
+    opacity: 0;
+    display: none;
+}
+
+.divider {
+    height: 2px;
+}
+
+.tab-item {
+    @apply transition-all duration-300 ease-linear cursor-pointer;
+}
+
+.tab-item.active-tab {
+    @apply bg-base-300 rounded-lg text-gray-600;
+}
+
+.tab-item:not(.active-tab) {
+    @apply bg-base-200 rounded-lg text-gray-400;
+}
+
+.tasks-container[data-view="board"] {
+    @apply flex-row;
+}
+
+.tasks-container[data-view="list"] {
+    @apply flex-col;
 }

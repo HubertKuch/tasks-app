@@ -10,5 +10,7 @@
     </head>
     <body data-theme="light">
         {{ $slot }}
+
+    <script src="@vite("resources/js/main.js")"></script>
     </body>
 </html>
