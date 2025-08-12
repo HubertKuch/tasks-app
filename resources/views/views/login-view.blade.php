@@ -4,7 +4,11 @@
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action="#" method="POST" class="space-y-6">
+        @if($errors->any())
+            <span class="error">{{$errors->first()}}</span>
+        @endif
+        <form action="/login" method="POST" class="space-y-6">
+            @csrf
             <div>
                 <label for="email" class="block text-sm/6 font-medium secondary-text">Email address</label>
                 <div class="mt-2">
@@ -25,7 +29,7 @@
                 <button type="submit" class="btn text-white flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Sign in</button>
             </div>
         </form>
-
+        <p class="text-sm">If you don't have a account you can create it <a class="inline-link" href="/register">here</a></p>
     </div>
 </div>
 
