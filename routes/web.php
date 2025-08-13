@@ -16,18 +16,20 @@ Route::middleware([AuthMiddleware::class])->group(function () {
     Route::get('/logout', [LoginController::class, 'logout']);
 });
 
-Route::middleware([AuthMiddleware::class, 'guest'])
--> group(function () {
+
+Route::middleware('guest')->group(function () {
     Route::get('/shared-tasks/{shareHash}', SharedTasksView::class);
 
     Route::get('/login', LoginView::class);
     Route::get('/register', RegisterView::class);
     Route::get("/register-success", RegisterSuccessView::class);
 
+
     // auth
     Route::post("/login", [LoginController::class, "authenticate"]);
     Route::post("/register", [RegisterController::class, "register"]);
 });
+
 
 Route::fallback(function () {
     return view('views.errors.404');

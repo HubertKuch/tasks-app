@@ -12,7 +12,7 @@ class AuthMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -23,12 +23,4 @@ class AuthMiddleware
         return redirect("/login");
     }
 
-    public function guest(Request $request, Closure $next): Response
-    {
-        if (Auth::guest()) {
-            return $next($request);
-        }
-
-        return redirect("/");
-    }
 }
