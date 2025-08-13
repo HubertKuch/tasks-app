@@ -50,7 +50,7 @@ $deleteTask = function (Task $taskToDelete) {
 
 <div
     id="task-{{$task->id}}"
-    class="w-full p-3 static bg-base-100/70 border border-base-300 rounded-2xl shadow-sm flex items-center justify-between hover:shadow-lg transition-shadow duration-300">
+    class="fade-in w-full p-3 static bg-base-100/70 border border-base-300 rounded-2xl shadow-sm flex items-center justify-between hover:shadow-lg transition-shadow duration-300">
     @if(!$this->isReadOnly)
         <dialog id="dialog_{{$task->id}}_task_modal" class="modal modal-open:bg-black/40 backdrop-blur-sm">
             <form method="dialog" wire:submit="edit({{$task->id}})"

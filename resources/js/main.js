@@ -121,3 +121,36 @@ window.TasksApp.emptyFilters = () => {
 window.TasksApp.buildLateFilters = () => {
     return {late: true}
 }
+
+const PRIORITY = Object.freeze({
+    HIGH: "high", MEDIUM: "medium", LOW: "low",
+});
+
+window.TasksApp.PRIORITY = PRIORITY;
+
+window.TasksApp.buildPriorityFilters = (priority) => {
+    if (!Object.values(TasksApp.PRIORITY).includes(priority)) {
+        console.error("Invalid priority, valid options: " + Object.values(TasksApp.PRIORITY) + ", provided " + priority);
+
+        return TasksApp.buildLateFilters();
+    }
+
+    return {priority}
+}
+
+const STATUS = Object.freeze({
+    TO_DO: "to-do", IN_PROGRESS: "in-progress", DONE: "done",
+});
+
+window.TasksApp.STATUS = STATUS;
+
+window.TasksApp.buildStatusFilter = (status) => {
+    if (!Object.values(TasksApp.STATUS).includes(status)) {
+        console.error("Invalid status, valid options: " + Object.values(TasksApp.STATUS) + ", provided " + status);
+
+        return TasksApp.buildLateFilters();
+    }
+
+    return {status}
+}
+

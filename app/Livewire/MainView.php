@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
 use App\Models\Task;
 use Auth;
@@ -87,8 +88,6 @@ class MainView extends Component
 
         $tasksQuery = $authedUser->tasks();
 
-
-
         if (array_key_exists('after', $this->filters) && array_key_exists('before', $this->filters)) {
             $tasksQuery->whereBetween('completion_date', [
                 $this->filters['after'],
@@ -99,6 +98,16 @@ class MainView extends Component
         // search for late tasks: before today
         else if (array_key_exists('late', $this->filters)) {
             $tasksQuery->whereBeforeToday('completion_date');
+        }
+
+        // priority filters
+        if (array_key_exists('priority', $this->filters)) {
+            $tasksQuery->where('priority', $this->filters['priority']);
+        }
+
+        // status filters
+        if (array_key_exists('status', $this->filters)) {
+            $tasksQuery->where('status', $this->filters['status']);
         }
 
         $groupedTasks = $tasksQuery
