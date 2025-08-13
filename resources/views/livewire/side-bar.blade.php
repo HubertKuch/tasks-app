@@ -12,10 +12,31 @@
                 role="button"
                 tabindex="0"
                 aria-label="All Tasks"
+                wire:click="dispatch('taskFilters', [TasksApp.clearFilters()])"
             >
                 <div class="flex items-center gap-2 font-normal text-gray-700">
                     <iconify-icon icon="octicon:archive-16" width="1em" height="1em" class="text-gray-500"></iconify-icon>
                     All
+                </div>
+                <div
+                    class="inline-flex items-center justify-center min-w-[1.6rem] min-h-[1.6rem] text-[0.65rem] font-semibold rounded-full bg-base-300 text-gray-700 shadow-sm"
+                    aria-label="Total tasks count"
+                >
+                    {{ $tasksCount }}
+                </div>
+            </div>
+            <div class="divider"></div>
+            <div
+                class="w-full mb-2 cursor-pointer flex items-center justify-between rounded-md px-3 py-2 hover-bg transition-colors duration-200 select-none"
+                role="button"
+                tabindex="0"
+                aria-label="Today"
+                wire:click="dispatch('taskFilters', [TasksApp.buildTodayFilters()])"
+            >
+                <div class="flex items-center gap-2 font-normal text-gray-700">
+                    <iconify-icon icon="octicon:archive-16" width="1em" height="1em"
+                                  class="text-gray-500"></iconify-icon>
+                    Today
                 </div>
                 <div
                     class="inline-flex items-center justify-center min-w-[1.6rem] min-h-[1.6rem] text-[0.65rem] font-semibold rounded-full bg-base-300 text-gray-700 shadow-sm"

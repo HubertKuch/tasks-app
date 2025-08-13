@@ -21,6 +21,7 @@ class MainView extends Component
         "read_only" => false
     ];
 
+    public array $filters = [];
 
     #[On('refresh')]
     public function refresh(): void
@@ -35,9 +36,9 @@ class MainView extends Component
 
         if ($status === TaskStatus::ToDo->value) {
             $this->state["todo_tasks"] = $authedUser->tasks()->get()
-                -> where('status', TaskStatus::ToDo)
-                -> whereNotIn('id', $taskId)
-                -> all();
+                ->where('status', TaskStatus::ToDo)
+                ->whereNotIn('id', $taskId)
+                ->all();
         } else if ($status === TaskStatus::InProgress->value) {
             $this->state["in_progress_tasks"] = $authedUser->tasks()->get()
                 ->where('status', TaskStatus::InProgress)
@@ -45,9 +46,9 @@ class MainView extends Component
                 ->all();
         } else if ($status === TaskStatus::Done->value) {
             $this->state["done_tasks"] = $authedUser->tasks()->get()
-                -> where('status', TaskStatus::Done)
-                -> whereNotIn('id', $taskId)
-                -> all();
+                ->where('status', TaskStatus::Done)
+                ->whereNotIn('id', $taskId)
+                ->all();
         }
 
         $this->dispatch("postDeleteTaskFromDom", taskId: $taskId);
@@ -59,6 +60,14 @@ class MainView extends Component
         Task::find($taskId)->deleteQuietly();
     }
 
+    #[On('taskFilters')]
+    public function filters($filters): void {
+        $this->filters = $filters;
+
+        \Illuminate\Log\log($filters);
+
+        $this->refresh();
+    }
 
     public function mount($readOnly = false, $state = []): void
     {
@@ -78,10 +87,20 @@ class MainView extends Component
 
         $authedUser = Auth::user();
 
-        $groupedTasks = $authedUser->tasks()
-            -> get()
-            -> sortBy('completion_date')
-            -> groupBy('status');
+        $tasksQuery = $authedUser->tasks();
+
+
+        if (array_key_exists('after', $this->filters) && array_key_exists('before', $this->filters)) {
+            $tasksQuery->whereBetween('completion_date', [
+                $this->filters['after'],
+                $this->filters['before']
+            ]);
+        }
+
+        $groupedTasks = $tasksQuery
+            ->orderBy('completion_date')
+            ->get()
+            ->groupBy('status');
 
         $this->state = [
             "read_only" => false,

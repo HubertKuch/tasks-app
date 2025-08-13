@@ -105,3 +105,15 @@ window.TasksApp.copyToClipboard = (value) => {
             TasksApp.toast("Link copied to clipboard");
         });
 }
+
+window.TasksApp.buildTodayFilters = () => {
+    const today = moment().format('YYYY-MM-DD');
+
+    const yesterday = moment().subtract(1, 'days').format('YYYY-MM-DD');
+
+    return { after: yesterday, before: today };
+}
+
+window.TasksApp.clearFilters = () => {
+    return {};
+}

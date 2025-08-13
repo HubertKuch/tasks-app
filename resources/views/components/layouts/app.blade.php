@@ -17,6 +17,8 @@
 
         <script type="module" src="https://unpkg.com/cally"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script type="text/javascript" src="https://momentjs.com/downloads/moment.js"></script>
+
         @vite("resources/js/main.js")
     </body>
 </html>
