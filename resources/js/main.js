@@ -69,19 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const isntInView = inView(details, 100);
 
         const stayInRight = ['relative', 'right-2'];
-        const stayOnBottom = ['relative', 'bottom-2', 'right-2'];
 
         details.addEventListener('mouseenter', () => {
             details.setAttribute('open', '');
 
-            console.log(isntInView.right);
-
             if (isntInView.right) {
                 details.querySelector('.dropdown-content').classList.add(...stayInRight);
-            }
-
-            if (isntInView.below) {
-                details.querySelector('.dropdown-content').classList.add(...stayOnBottom);
             }
         });
 
@@ -90,10 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (isntInView.right) {
                 details.querySelector('.dropdown-content').classList.remove(...stayInRight);
-            }
-
-            if (isntInView.below) {
-                details.querySelector('.dropdown-content').classList.remove(...stayOnBottom);
             }
         });
     });
