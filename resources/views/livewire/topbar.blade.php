@@ -28,6 +28,7 @@ $createTask = function () {
 
 <div
     class="w-full flex items-center justify-between border-b-2 border-base-300 shadow-[0_4px_20px_-13px_rgba(0,0,0,0.2)] bg-base-100/70 backdrop-blur-sm px-4 h-10">
+    @if(auth()->check())
         <button
             title="Toggle sidebar"
             class="toggle-sidebar cursor-pointer w-8 h-8 flex items-center justify-center rounded-lg hover:bg-base-200 transition-colors duration-200 text-gray-600 hover:text-gray-900"
@@ -36,8 +37,9 @@ $createTask = function () {
             <iconify-icon icon="octicon:sidebar-expand-16" class="w-5 h-5 hidden sidebar__expand"></iconify-icon>
             <iconify-icon icon="octicon:sidebar-collapse-16" class="w-5 h-5 sidebar__collapse"></iconify-icon>
         </button>
+    @endif
 
-    <ul class="flex items-center tabs-nav-container tasks-view-nav gap-2">
+    <ul class="flex items-center justify-center tabs-nav-container tasks-view-nav gap-2 w-full">
         <li>
             <div data-set-view="list"
                  class="tab-item rounded-lg px-4 py-1 text-sm font-semibold hover:bg-base-300 transition">
@@ -98,6 +100,22 @@ $createTask = function () {
                            class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-base-300 transition">
                             <iconify-icon icon="octicon:sign-out-16" class="w-4 h-4"></iconify-icon>
                             Sign out
+                        </a>
+                    </li>
+
+                @else
+                    <li>
+                        <a href="/login"
+                           class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-base-300 transition">
+                            <iconify-icon icon="octicon:milestone-16" class="w-4 h-4"></iconify-icon>
+                            Log in
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/register"
+                           class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-base-300 transition">
+                            <iconify-icon icon="octicon:person-add-16" class="w-4 h-4"></iconify-icon>
+                            Register
                         </a>
                     </li>
                 @endif
