@@ -80,6 +80,7 @@ class MainView extends Component
 
         $groupedTasks = $authedUser->tasks()
             -> get()
+            -> sortBy('completion_date')
             -> groupBy('status');
 
         $this->state = [

@@ -141,8 +141,7 @@ $deleteTask = function (Task $taskToDelete) {
         </dialog>
     @endif
 
-    <div class="flex items-center gap-2 w-full"
-         onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').showModal()">
+    <div class="flex items-center gap-2 w-full">
 
         <div class="flex flex-col gap-2 w-full">
             <div class="flex-as-row justify-between w-full">
@@ -191,7 +190,7 @@ $deleteTask = function (Task $taskToDelete) {
                 @endif
             </div>
 
-            <div class="pl-4">
+            <div class="pl-4 cursor-pointer" onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').showModal()">
                 {{$task->description}}
             </div>
 
