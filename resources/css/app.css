@@ -31,7 +31,7 @@
     --color-accent-content: oklch(98% 0.01 160);
     --color-neutral: rgb(50, 48, 44);
     --color-neutral-content: oklch(98% 0.01 240);
-    --color-info: oklch(70% 0.2 220);
+    --color-info: #64B5F6;
     --color-info-content: oklch(98% 0.01 220);
     --color-success: #34c759;
     --color-success-content: oklch(98% 0.01 140);
@@ -59,9 +59,33 @@
 
 @custom-variant dark (&:where([data-theme=night], [data-theme=night] *));
 
+.atkinson-hyperlegible-regular {
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.atkinson-hyperlegible-bold {
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.atkinson-hyperlegible-regular-italic {
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.atkinson-hyperlegible-bold-italic {
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
+    /*--font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',*/
+    /*'Segoe UI Symbol', 'Noto Color Emoji';*/
 }
 
 html, body {
@@ -70,6 +94,16 @@ html, body {
     height: var(--app-height);
     width: 100%;
     color: var(--text-color-base);
+
+    font-family: "Atkinson Hyperlegible", sans-serif !important;
+    font-size: 100%;
+    font-weight: 400;
+
+    font-variant-ligatures: no-common-ligatures;
+    -webkit-font-variant-ligatures: no-common-ligatures;
+    font-variant-numeric: diagonal-fractions;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 * {
@@ -211,4 +245,10 @@ summary {
 
 .tasks-container[data-view="list"] {
     @apply flex-col;
+}
+
+.toast-info {
+    color: var(--color-neutral) !important;
+    background: var(--color-info) !important;
+    @apply shadow-lg rounded-md;
 }

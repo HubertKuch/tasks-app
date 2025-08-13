@@ -10,7 +10,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use function Termwind\render;
 
 class MainView extends Component
 {
@@ -39,12 +38,12 @@ class MainView extends Component
                 -> all();
         } else if ($status === TaskStatus::InProgress->value) {
             $this->state["in_progress_tasks"] = $authedUser->tasks()->get()
-                ->where('status', TaskStatus::ToDo)
+                ->where('status', TaskStatus::InProgress)
                 ->whereNotIn('id', $taskId)
                 ->all();
         } else if ($status === TaskStatus::Done->value) {
             $this->state["done_tasks"] = $authedUser->tasks()->get()
-                -> where('status', TaskStatus::ToDo)
+                -> where('status', TaskStatus::Done)
                 -> whereNotIn('id', $taskId)
                 -> all();
         }
@@ -53,7 +52,7 @@ class MainView extends Component
     }
 
     #[On("postDeleteTaskFromDom")]
-    public function postDeleteFromDom($taskId)
+    public function postDeleteFromDom($taskId): void
     {
         Task::find($taskId)->deleteQuietly();
     }

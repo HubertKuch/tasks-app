@@ -50,11 +50,22 @@ waitForElement(".tasks-container", (container) => {
         })
 });
 
-
-
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('details').forEach(details => {
         details.addEventListener('mouseenter', () => details.setAttribute('open', ''));
         details.addEventListener('mouseleave', () => details.removeAttribute('open'));
     });
 });
+
+window.TasksApp = window.TasksApp || {};
+
+/**
+* @param {string} type A type like: info, success, warning
+* */
+window.TasksApp.toast = function toast(msg, type = 'info') {
+    Toastify({
+        text: msg,
+        className: `toast-${type}`,
+        duration: 1500
+    }).showToast();
+}
