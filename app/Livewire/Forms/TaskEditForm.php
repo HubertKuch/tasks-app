@@ -16,6 +16,8 @@ class TaskEditForm extends Form
     public $description = '';
     public $status = TaskStatus::ToDo;
     public $priority = TaskPriority::Low;
+    #[Validate('date')]
+    public $completion_date = null;
 
     public Task $task;
 
@@ -25,6 +27,7 @@ class TaskEditForm extends Form
         $this->description = $task->description;
         $this->priority = $task->priority;
         $this->status = $task->status;
+        $this->completion_date = $task->completion_date;
 
         $this->task = $task;
     }

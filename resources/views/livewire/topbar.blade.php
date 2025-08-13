@@ -2,14 +2,22 @@
 
 use App\Livewire\Forms\TaskEditForm;
 use App\Models\Task;
-use function Livewire\Volt\{form, mount, rules, state};
+use function Livewire\Volt\{form, mount, on, rules, state};
 
 form(TaskEditForm::class);
 
 rules([
     "title" => "required",
     "status" => "required",
-    "priority" => "required"
+    "priority" => "required",
+    "completion_date" => "date"
+]);
+
+on([
+    'completion_date_change' => function ($date) {
+        $this->form->completion_date = $date;
+        $this->skipRender();
+    },
 ]);
 
 $createTask = function () {
@@ -19,6 +27,8 @@ $createTask = function () {
         "user_id" => $user->id,
         ...$this->form->all()
     ]);
+
+    \Illuminate\Log\log($this->form->completion_date);
 
     $this->js("TasksApp.toast('Task created')");
     $this->dispatch("refresh");
@@ -46,6 +56,7 @@ $createTask = function () {
                 List
             </div>
         </li>
+
         <li>
             <div data-set-view="board"
                  class="tab-item active-tab rounded-lg px-4 py-1 text-sm font-semibold hover:bg-base-300 transition">
@@ -165,6 +176,34 @@ $createTask = function () {
                         <option value="medium">Medium</option>
                         <option value="high">High</option>
                     </select>
+                </div>
+
+                <div>
+                    <label class="label text-xs font-semibold text-gray-500">Completion date</label>
+                    <button type="button" popovertarget="cally-popover" class="input input-border w-full" id="cally"
+                            style="anchor-name:--cally">
+                        {{$this->form->completion_date ?? "Completion date"}}
+                    </button>
+                    <div popover id="cally-popover" wire:ignore class="dropdown bg-base-100 rounded-box shadow-lg"
+                         style="position-anchor:--cally">
+                        <calendar-date
+                            min="{{now()->toDateString()}}"
+                            class="cally" wire:model="form.completion_date"
+                                       wire:ignore
+                                       onchange="document.querySelector('#cally').textContent = this.value"
+                                       wire:change="dispatchSelf('completion_date_change', [$event.target.value])"
+                        >
+                            <svg aria-label="Previous" class="fill-current size-4" slot="previous"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M15.75 19.5 8.25 12l7.5-7.5"></path>
+                            </svg>
+                            <svg aria-label="Next" class="fill-current size-4" slot="next"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                            </svg>
+                            <calendar-month></calendar-month>
+                        </calendar-date>
+                    </div>
                 </div>
 
                 <div class="modal-action justify-end">
