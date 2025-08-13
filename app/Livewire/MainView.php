@@ -66,6 +66,7 @@ class MainView extends Component
             $this->reFetchStateWhenNotReadOnly();
         } else {
             $this->state = $state;
+            $this->state['read_only'] = true;
         }
     }
 
@@ -78,6 +79,7 @@ class MainView extends Component
         $authedUser = Auth::user();
 
         $this->state = [
+            "read_only" => false,
             "all_tasks_count" => $authedUser->tasks()->get()->count(),
             "done_tasks" => $authedUser->tasks()->get()->where('status', TaskStatus::Done)->all(),
             "todo_tasks" => $authedUser->tasks()->get()->where('status', TaskStatus::ToDo)->all(),

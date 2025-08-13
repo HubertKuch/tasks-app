@@ -16,7 +16,7 @@
 
                 <div class="flex flex-col gap-4">
                     @foreach ($state['done_tasks'] as $task)
-                        @livewire('singletask', ['task' => $task, 'isReadOnly' => false], key('done-'.$task->id))
+                        @livewire('singletask', ['task' => $task, 'isReadOnly' => $state['read_only']], key('done-'.$task->id))
                     @endforeach
                 </div>
             </div>
@@ -30,7 +30,7 @@
 
                 <div class="flex flex-col gap-4">
                     @foreach ($state["in_progress_tasks"] as $task)
-                        @livewire('singletask', ['task' => $task], key('in-progress-'.$task->id))
+                        @livewire('singletask', ['task' => $task, "isReadOnly" => $state['read_only']], key('in-progress-'.$task->id))
                     @endforeach
                 </div>
             </div>
@@ -44,7 +44,7 @@
 
                 <div class="flex flex-col gap-4">
                     @foreach ($state["todo_tasks"] as $task)
-                        @livewire('singletask', ['task' => $task], key('todo-'.$task->id))
+                        @livewire('singletask', ['task' => $task, "isReadOnly" => $state['read_only']], key('todo-'.$task->id))
                     @endforeach
                 </div>
             </div>
