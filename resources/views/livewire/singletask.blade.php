@@ -4,11 +4,18 @@ use App\Enums\TaskStatus;
 use App\Livewire\Forms\TaskEditForm;
 use App\Models\Task;
 use Carbon\Carbon;
-use function Livewire\Volt\{form, mount, state};
+use function Livewire\Volt\{form, mount, on, state};
 
 state(['task', 'isReadOnly'])->reactive();
 
 form(TaskEditForm::class);
+
+on([
+    'completion_date_change' => function ($date) {
+        $this->form->completion_date = $date;
+        $this->skipRender();
+    }
+]);
 
 mount(function () {
     $this->form->setTask($this->task);
@@ -19,7 +26,8 @@ $edit = function (Task $taskToUpdate) {
         "title" => $this->form->title,
         "status" => $this->form->status,
         "description" => $this->form->description,
-        "priority" => $this->form->priority
+        "priority" => $this->form->priority,
+        "completion_date" => $this->form->completion_date
     ]);
 
     $this->dispatch('refresh');
@@ -87,6 +95,36 @@ $deleteTask = function (Task $taskToDelete) {
                     </select>
                 </div>
 
+                <div>
+                    <label class="label text-xs font-semibold text-gray-500">Completion date</label>
+                    <button type="button" popovertarget="cally-popover-{{$task->id}}" class="input input-border w-full"
+                            id="cally-{{$task->id}}"
+                            style="anchor-name:--cally">
+                        {{Carbon::parse($this->form->completion_date)->toDateString()}}
+                    </button>
+                    <div popover id="cally-popover-{{$task->id}}" wire:ignore
+                         class="dropdown bg-base-100 rounded-box shadow-lg"
+                         style="position-anchor:--cally">
+                        <calendar-date
+                            min="{{now()->toDateString()}}"
+                            class="cally" wire:model="form.completion_date"
+                            wire:ignore
+                            onchange="document.querySelector('#cally-{{$task->id}}').textContent = this.value"
+                            wire:change="dispatchSelf('completion_date_change', [$event.target.value])"
+                        >
+                            <svg aria-label="Previous" class="fill-current size-4" slot="previous"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M15.75 19.5 8.25 12l7.5-7.5"></path>
+                            </svg>
+                            <svg aria-label="Next" class="fill-current size-4" slot="next"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                            </svg>
+                            <calendar-month></calendar-month>
+                        </calendar-date>
+                    </div>
+                </div>
+
                 <div class="modal-action justify-end">
                     <button onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').close()"
                             type="submit"
@@ -108,7 +146,7 @@ $deleteTask = function (Task $taskToDelete) {
 
         <div class="flex flex-col gap-2 w-full">
             <div class="flex-as-row justify-between w-full">
-                <div class="font-medium text-xl text-base-content w-full">{{ $task->title }}</div>
+                <div class="font-bold text-xl text-base-content w-full">{{ $task->title }}</div>
 
                 @if(!$this->isReadOnly)
                     <details class="dropdown static inline">
@@ -153,7 +191,7 @@ $deleteTask = function (Task $taskToDelete) {
                 @endif
             </div>
 
-            <div>
+            <div class="pl-4">
                 {{$task->description}}
             </div>
 
