@@ -2,6 +2,7 @@
 
 use App\Livewire\Forms\TaskEditForm;
 use App\Models\Task;
+use Carbon\Carbon;
 use function Livewire\Volt\{form, mount, on, rules, state};
 
 form(TaskEditForm::class);
@@ -23,12 +24,16 @@ on([
 $createTask = function () {
     $user = Auth::user();
 
-    Task::create([
+    if ($this->form->completion_date == null) {
+        $this->form->completion_date = Carbon::now()->format('Y-m-d');
+    }
+
+    $task = Task::create([
         "user_id" => $user->id,
         ...$this->form->all()
     ]);
 
-    \Illuminate\Log\log($this->form->completion_date);
+    $task->snapshot($task->id . '-initial-snapshot');
 
     $this->js("TasksApp.toast('Task created')");
     $this->dispatch("refresh");
@@ -189,9 +194,9 @@ $createTask = function () {
                         <calendar-date
                             min="{{now()->toDateString()}}"
                             class="cally" wire:model="form.completion_date"
-                                       wire:ignore
-                                       onchange="document.querySelector('#cally').textContent = this.value"
-                                       wire:change="dispatchSelf('completion_date_change', [$event.target.value])"
+                            wire:ignore
+                            onchange="document.querySelector('#cally').textContent = this.value"
+                            wire:change="dispatchSelf('completion_date_change', [$event.target.value])"
                         >
                             <svg aria-label="Previous" class="fill-current size-4" slot="previous"
                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

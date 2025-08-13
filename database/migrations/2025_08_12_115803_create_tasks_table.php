@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('priority', ['low', 'medium', 'high'])->default('low');
             $table->enum('status', ['to-do', 'in-progress', 'done'])->default('to-do');
-            $table->dateTime('completion_date')->nullable();
+            $table->date('completion_date')->useCurrent();
             $table->text('description')->nullable();
             $table->timestamps();
         });

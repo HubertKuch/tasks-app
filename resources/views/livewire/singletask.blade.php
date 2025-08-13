@@ -15,6 +15,7 @@ mount(function () {
 });
 
 on([
+    'refresh' => fn () => $this->mount(),
     'completion_date_change' => function ($date) {
         $this->form->completion_date = $date;
         $this->skipRender();
@@ -38,6 +39,7 @@ on([
     class="fade-in w-full p-3 static bg-base-100/70 border border-base-300 rounded-2xl shadow-sm flex items-center justify-between hover:shadow-lg transition-shadow duration-300">
     @if(!$this->isReadOnly)
         @livewire('task-edit-dialog', ['task' => $task])
+        @livewire('task-history-modal', ["taskId" => $task->id])
     @endif
 
     <div class="flex items-center gap-2 w-full">

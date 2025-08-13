@@ -27,7 +27,8 @@ class MainView extends Component
     #[On('refresh')]
     public function refresh(): void
     {
-        $this->reFetchStateWhenNotReadOnly();
+        \Illuminate\Log\log('mount');
+        $this->mount();
     }
 
     #[On("deleteTask")]

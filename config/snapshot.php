@@ -113,10 +113,10 @@ return [
     |
     */
     'reports' => [
-        'enabled' => false,
+        'enabled' => true,
         'formats' => ['html', 'json', 'csv'],
         'template' => 'default',
-        'max_timeline_entries' => 100,
+        'max_timeline_entries' => 20,
         'include_diffs' => true,
     ],
 ];

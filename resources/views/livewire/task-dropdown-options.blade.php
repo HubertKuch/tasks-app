@@ -39,6 +39,7 @@ state('task');
 
             <li>
                 <a
+                        onclick="document.querySelector('#task-{{$task->id}}-history-modal').showModal()"
                         class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition-colors duration-150 cursor-pointer">
                     <iconify-icon class="text-indigo-500" icon="octicon:history-24"></iconify-icon>
                     <span>History</span>
