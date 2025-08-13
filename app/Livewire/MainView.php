@@ -39,12 +39,12 @@ class MainView extends Component
                 -> all();
         } else if ($status === TaskStatus::InProgress->value) {
             $this->state["in_progress_tasks"] = $authedUser->tasks()->get()
-                ->where('status', TaskStatus::ToDo)
+                ->where('status', TaskStatus::InProgress)
                 ->whereNotIn('id', $taskId)
                 ->all();
         } else if ($status === TaskStatus::Done->value) {
             $this->state["done_tasks"] = $authedUser->tasks()->get()
-                -> where('status', TaskStatus::ToDo)
+                -> where('status', TaskStatus::Done)
                 -> whereNotIn('id', $taskId)
                 -> all();
         }
