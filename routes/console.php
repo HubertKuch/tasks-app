@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('app:send-late-tasks-emails', fn() => null)
+Schedule::command('app:send-late-tasks-emails')
     -> daily()
-    -> at("00:00");
+    -> at('04:00');
