@@ -5,7 +5,7 @@ use App\Livewire\Forms\TaskEditForm;
 use App\Models\Task;
 use function Livewire\Volt\{form, mount, state};
 
-state(['task'])->reactive();
+state(['task', 'isReadOnly'])->reactive();
 
 form(TaskEditForm::class);
 
@@ -41,9 +41,9 @@ $deleteTask = function (Task $taskToDelete) {
 
 <div
     id="task-{{$task->id}}"
-    class="w-full p-3 bg-base-100/70 border border-base-300 rounded-2xl shadow-sm flex items-center justify-between hover:shadow-lg transition-shadow duration-300">
+    class="w-full p-3 static bg-base-100/70 border border-base-300 rounded-2xl shadow-sm flex items-center justify-between hover:shadow-lg transition-shadow duration-300">
 
-    @if($this->task !== null)
+    @if(!$this->isReadOnly)
         <dialog id="dialog_{{$task->id}}_task_modal" class="modal modal-open:bg-black/40 backdrop-blur-sm">
             <form method="dialog" wire:submit="edit({{$task->id}})"
                   class="modal-box max-w-md rounded-xl bg-base-100 shadow-xl p-6">
@@ -88,36 +88,40 @@ $deleteTask = function (Task $taskToDelete) {
                 </div>
 
                 <div class="modal-action justify-end">
-                    <button onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').close()" type="submit"
+                    <button onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').close()"
+                            type="submit"
                             class="btn btn-primary btn-sm px-6">
                         Save
                     </button>
-                    <button type="button" onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').close()"
+                    <button type="button"
+                            onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').close()"
                             class="btn btn-secondary btn-sm px-6">
                         Close
                     </button>
                 </div>
             </form>
         </dialog>
+    @endif
 
-        <div class="flex items-center gap-4"
-             onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').showModal()">
-            <div class="w-3 h-3 rounded-full
+    <div class="flex items-center gap-4"
+         onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').showModal()">
+        <div class="w-3 h-3 rounded-full
             {{ $task->status->value === 'done' ? 'bg-success' : ($task->status->value === 'in-progress' ? 'bg-yellow-400' : 'bg-gray-400') }}">
-            </div>
-
-            <div>
-                <div class="font-medium text-base-content">{{ $task->title }}</div>
-                <div class="text-xs text-gray-500 flex items-center gap-1">
-                    <iconify-icon icon="mdi:flag"
-                                  class="{{ $task->priority->value === 'high' ? 'text-red-500' : ($task->priority->value === 'medium' ? 'text-yellow-500' : 'text-gray-400') }}">
-                    </iconify-icon>
-                    <span class="capitalize">{{ $task->priority->value }}</span>
-                </div>
-            </div>
         </div>
 
-        <details class="dropdown dropdown-end block static">
+        <div>
+            <div class="font-medium text-base-content">{{ $task->title }}</div>
+            <div class="text-xs text-gray-500 flex items-center gap-1">
+                <iconify-icon icon="mdi:flag"
+                              class="{{ $task->priority->value === 'high' ? 'text-red-500' : ($task->priority->value === 'medium' ? 'text-yellow-500' : 'text-gray-400') }}">
+                </iconify-icon>
+                <span class="capitalize">{{ $task->priority->value }}</span>
+            </div>
+        </div>
+    </div>
+
+    @if(!$this->isReadOnly)
+        <details class="dropdown static inline">
             <summary
                 class="list-none p-2 rounded-xl block hover:bg-base-200 transition-colors duration-200 cursor-pointer">
                 <iconify-icon

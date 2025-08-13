@@ -14,7 +14,7 @@
 
                 <div class="flex flex-col gap-4">
                     @foreach ($state['done_tasks'] as $task)
-                        @livewire('singletask', ['task' => $task], key('done-'.$task->id))
+                        @livewire('singletask', ['task' => $task, 'isReadOnly' => false], key('done-'.$task->id))
                     @endforeach
                 </div>
             </div>

@@ -11,6 +11,20 @@ function waitForElement(selector, callback) {
     }, 100);
 }
 
+function inView(elm, threshold = 0) {
+    const rect = elm.getBoundingClientRect();
+    const vpWidth = window.innerWidth;
+    const vpHeight = window.innerHeight;
+
+    const above = rect.bottom - threshold <= 0;
+    const below = rect.top - vpHeight + threshold >= 0;
+    const left = rect.right - threshold <= 0;
+    const right = rect.left - vpWidth + threshold >= 0;
+    const inside = !above && !below && !left && !right;
+
+    return {above, below, left, right, inside};
+}
+
 waitForElement("button.toggle-sidebar", (toggler) => {
     const sidebar = document.querySelector("#main-sidebar");
     const expander = document.querySelector(".sidebar__expand");
@@ -52,8 +66,25 @@ waitForElement(".tasks-container", (container) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('details').forEach(details => {
-        details.addEventListener('mouseenter', () => details.setAttribute('open', ''));
-        details.addEventListener('mouseleave', () => details.removeAttribute('open'));
+        const isntInView = inView(details, 100);
+
+        details.addEventListener('mouseenter', () => {
+            details.setAttribute('open', '');
+
+            console.log(isntInView.right);
+
+            if (isntInView.right) {
+                details.querySelector('.dropdown-content').classList.add('relative', 'right-2');
+            }
+        });
+
+        details.addEventListener('mouseleave', () => {
+            details.removeAttribute('open')
+
+            if (isntInView.right) {
+                details.querySelector('.dropdown-content').classList.remove('relative', 'right-2');
+            }
+        });
     });
 });
 
