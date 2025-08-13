@@ -19,7 +19,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $req->session()->regenerate();
 
-            return redirect()->intended();
+            return redirect('/', 301);
         }
 
         return back()->withErrors("Email or password are invalid");

@@ -22,4 +22,13 @@ class AuthMiddleware
 
         return redirect("/login");
     }
+
+    public function guest(Request $request, Closure $next): Response
+    {
+        if (Auth::guest()) {
+            return $next($request);
+        }
+
+        return redirect("/");
+    }
 }
