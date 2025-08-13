@@ -31,9 +31,11 @@ class MainView extends Component
     }
 
     #[On("deleteTask")]
-    public function deleteFromDom($taskId, $status): void
+    public function deleteFromDom($taskId): void
     {
         $authedUser = Auth::user();
+        $task = $authedUser->tasks->find($taskId);
+        $status = $task->status;
 
         if ($status === TaskStatus::ToDo->value) {
             $this->state["todo_tasks"] = $authedUser->tasks()->get()
@@ -59,6 +61,7 @@ class MainView extends Component
     public function postDeleteFromDom($taskId): void
     {
         Task::find($taskId)->deleteQuietly();
+        $this->mount();
     }
 
     #[On('taskFilters')]

@@ -6,44 +6,29 @@ use App\Models\Task;
 use Carbon\Carbon;
 use function Livewire\Volt\{form, mount, on, state};
 
-state(['task', 'isReadOnly'])->reactive();
+state(['task', 'isReadOnly']);
 
 form(TaskEditForm::class);
-
-on([
-    'completion_date_change' => function ($date) {
-        $this->form->completion_date = $date;
-        $this->skipRender();
-    }
-]);
 
 mount(function () {
     $this->form->setTask($this->task);
 });
 
-$edit = function (Task $taskToUpdate) {
-    $taskToUpdate->update([
-        "title" => $this->form->title,
-        "status" => $this->form->status,
-        "description" => $this->form->description,
-        "priority" => $this->form->priority,
-        "completion_date" => $this->form->completion_date
-    ]);
+on([
+    'completion_date_change' => function ($date) {
+        $this->form->completion_date = $date;
+        $this->skipRender();
+    },
+    'markAsDone' => function($taskId) {
+        $task = Task::find($taskId);
 
-    $this->dispatch('refresh');
-};
+        $task->update([
+            "status" => TaskStatus::Done
+        ]);
 
-$markAsDone = function (Task $completedTask) {
-    $completedTask->update([
-        "status" => TaskStatus::Done
-    ]);
-
-    $this->dispatch("refresh");
-};
-
-$deleteTask = function (Task $taskToDelete) {
-    $this->dispatch("deleteTask", taskId: $taskToDelete->id, status: $taskToDelete->status);
-}
+        $this->dispatch("refresh");
+    }
+]);
 
 ?>
 
@@ -52,95 +37,7 @@ $deleteTask = function (Task $taskToDelete) {
     id="task-{{$task->id}}"
     class="fade-in w-full p-3 static bg-base-100/70 border border-base-300 rounded-2xl shadow-sm flex items-center justify-between hover:shadow-lg transition-shadow duration-300">
     @if(!$this->isReadOnly)
-        <dialog id="dialog_{{$task->id}}_task_modal" class="modal modal-open:bg-black/40 backdrop-blur-sm">
-            <form method="dialog" wire:submit="edit({{$task->id}})"
-                  class="modal-box max-w-md rounded-xl bg-base-100 shadow-xl p-6">
-                @csrf
-                <input type="hidden" name="task_id" wire:model="task.id">
-                <input
-                    wire:model="form.title"
-                    type="text"
-                    class="input input-bordered w-full text-lg font-semibold mb-4"
-                    placeholder="Task Title"
-                    name="title"
-                    autofocus
-                />
-
-                <textarea
-                    wire:model="form.description"
-                    class="textarea textarea-bordered w-full min-h-[150px] resize-none mb-6 text-gray-700"
-                    contenteditable="true"
-                ></textarea>
-
-                <div>
-                    <label class="label text-xs font-semibold text-gray-500">Status</label>
-                    <select
-                        wire:model="form.status"
-                        name="status" class="select select-bordered w-full">
-                        <option value="to-do" @selected($task->status === 'to-do')>To-do</option>
-                        <option value="in-progress" @selected($task->status === 'in-progress')>In Progress</option>
-                        <option value="done" @selected($task->status === 'done')>Done</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="label text-xs font-semibold text-gray-500">Priority</label>
-                    <select
-                        wire:model="form.priority"
-
-                        name="priority" class="select select-bordered w-full">
-                        <option value="low" @selected($task->priority === 'low')>Low</option>
-                        <option value="medium" @selected($task->priority === 'medium')>Medium</option>
-                        <option value="high" @selected($task->priority === 'high')>High</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="label text-xs font-semibold text-gray-500">Completion date</label>
-                    <button type="button" popovertarget="cally-popover-{{$task->id}}" class="input input-border w-full"
-                            id="cally-{{$task->id}}"
-                            style="anchor-name:--cally">
-                        {{Carbon::parse($this->form->completion_date)->toDateString()}}
-                    </button>
-                    <div popover id="cally-popover-{{$task->id}}" wire:ignore
-                         class="dropdown bg-base-100 rounded-box shadow-lg"
-                         style="position-anchor:--cally">
-                        <calendar-date
-                            value="{{Carbon::parse($this->form->completion_date)->toDateString()}}"
-                            min="{{now()->toDateString()}}"
-                            class="cally"
-                            wire:model="form.completion_date"
-                            wire:ignore
-                            onchange="document.querySelector('#cally-{{$task->id}}').textContent = this.value"
-                            wire:change="dispatchSelf('completion_date_change', [$event.target.value])"
-                        >
-                            <svg aria-label="Previous" class="fill-current size-4" slot="previous"
-                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                <path d="M15.75 19.5 8.25 12l7.5-7.5"></path>
-                            </svg>
-                            <svg aria-label="Next" class="fill-current size-4" slot="next"
-                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                <path d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
-                            </svg>
-                            <calendar-month></calendar-month>
-                        </calendar-date>
-                    </div>
-                </div>
-
-                <div class="modal-action justify-end">
-                    <button onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').close()"
-                            type="submit"
-                            class="btn btn-primary btn-sm px-6">
-                        Save
-                    </button>
-                    <button type="button"
-                            onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').close()"
-                            class="btn btn-secondary btn-sm px-6">
-                        Close
-                    </button>
-                </div>
-            </form>
-        </dialog>
+        @livewire('task-edit-dialog', ['task' => $task])
     @endif
 
     <div class="flex items-center gap-2 w-full">
@@ -150,51 +47,13 @@ $deleteTask = function (Task $taskToDelete) {
                 <div class="font-bold text-xl text-base-content w-full">{{ $task->title }}</div>
 
                 @if(!$this->isReadOnly)
-                    <details class="dropdown static inline">
-                        <summary
-                            class="list-none p-2 rounded-xl w-8 h-8 block hover:bg-base-200 transition-colors duration-200 cursor-pointer">
-                            <iconify-icon
-                                class="inline-icon cursor-pointer text-xl text-gray-600 hover:text-gray-900 transition-colors duration-200 z-10"
-                                icon="octicon:three-bars-24">
-                            </iconify-icon>
-                        </summary>
-
-                        <div
-                            class="dropdown-content bg-base-100 rounded-2xl shadow-lg border border-base-300 p-1 fade-in">
-                            <ul class="menu menu-sm min-w-[9rem] z-40">
-                                <li>
-                                    <a onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').showModal()"
-                                       class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition-colors duration-150 cursor-pointer">
-                                        <iconify-icon class="text-blue-500" icon="mdi:pencil-outline"></iconify-icon>
-                                        <span>Edit</span>
-                                    </a>
-                                </li>
-                                @if($task->status !== TaskStatus::Done)
-                                    <li>
-                                        <a wire:click="markAsDone({{$task->id}})"
-                                           class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition-colors duration-150 cursor-pointer">
-                                            <iconify-icon class="text-green-500"
-                                                          icon="mdi:check-circle-outline"></iconify-icon>
-                                            <span>Mark as Done</span>
-                                        </a>
-                                    </li>
-                                @endif
-                                <li>
-                                    <a wire:click.prevent="deleteTask({{$task->id}})"
-                                       class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition-colors duration-150 cursor-pointer">
-                                        <iconify-icon class="text-red-500" icon="octicon:trash-24"></iconify-icon>
-                                        <span>Delete</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </details>
+                    @livewire('task-dropdown-options', ['task' => $task])
                 @endif
             </div>
 
             <div class="pl-4 cursor-pointer whitespace-pre-line"
                  onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').showModal()">
-                    {{$task->description}}
+                {{$task->description}}
             </div>
 
             <div class="text-xs text-gray-500 flex-as-row justify-between gap-1 mt-2">
