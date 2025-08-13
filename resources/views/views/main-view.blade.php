@@ -48,4 +48,6 @@
             </div>
         </section>
     </main>
+
+    <livewire:task-share-modal />
 </div>
