@@ -64,8 +64,6 @@ class MainView extends Component
     public function filters($filters): void {
         $this->filters = $filters;
 
-        \Illuminate\Log\log($filters);
-
         $this->refresh();
     }
 
@@ -90,11 +88,17 @@ class MainView extends Component
         $tasksQuery = $authedUser->tasks();
 
 
+
         if (array_key_exists('after', $this->filters) && array_key_exists('before', $this->filters)) {
             $tasksQuery->whereBetween('completion_date', [
                 $this->filters['after'],
                 $this->filters['before']
             ]);
+        }
+
+        // search for late tasks: before today
+        else if (array_key_exists('late', $this->filters)) {
+            $tasksQuery->whereBeforeToday('completion_date');
         }
 
         $groupedTasks = $tasksQuery
@@ -105,6 +109,7 @@ class MainView extends Component
         $this->state = [
             "read_only" => false,
             "all_tasks_count" => $authedUser->tasks()->get()->count(),
+            "count" => $groupedTasks->count(),
             "done_tasks" => $groupedTasks[TaskStatus::Done->value] ?? [],
             "todo_tasks" => $groupedTasks[TaskStatus::ToDo->value] ?? [],
             "in_progress_tasks" => $groupedTasks[TaskStatus::InProgress->value] ?? [],

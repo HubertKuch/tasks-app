@@ -111,9 +111,13 @@ window.TasksApp.buildTodayFilters = () => {
 
     const yesterday = moment().subtract(1, 'days').format('YYYY-MM-DD');
 
-    return { after: yesterday, before: today };
+    return {after: yesterday, before: today};
 }
 
-window.TasksApp.clearFilters = () => {
+window.TasksApp.emptyFilters = () => {
     return {};
+}
+
+window.TasksApp.buildLateFilters = () => {
+    return {late: true}
 }
