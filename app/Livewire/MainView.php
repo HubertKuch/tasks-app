@@ -78,12 +78,16 @@ class MainView extends Component
 
         $authedUser = Auth::user();
 
+        $groupedTasks = $authedUser->tasks()
+            -> get()
+            -> groupBy('status');
+
         $this->state = [
             "read_only" => false,
             "all_tasks_count" => $authedUser->tasks()->get()->count(),
-            "done_tasks" => $authedUser->tasks()->get()->where('status', TaskStatus::Done)->all(),
-            "todo_tasks" => $authedUser->tasks()->get()->where('status', TaskStatus::ToDo)->all(),
-            "in_progress_tasks" => $authedUser->tasks()->get()->where('status', TaskStatus::InProgress)->all(),
+            "done_tasks" => $groupedTasks[TaskStatus::Done->value] ?? [],
+            "todo_tasks" => $groupedTasks[TaskStatus::ToDo->value] ?? [],
+            "in_progress_tasks" => $groupedTasks[TaskStatus::InProgress->value] ?? [],
         ];
     }
 
