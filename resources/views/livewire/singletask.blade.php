@@ -106,8 +106,10 @@ $deleteTask = function (Task $taskToDelete) {
                          class="dropdown bg-base-100 rounded-box shadow-lg"
                          style="position-anchor:--cally">
                         <calendar-date
+                            value="{{Carbon::parse($this->form->completion_date)->toDateString()}}"
                             min="{{now()->toDateString()}}"
-                            class="cally" wire:model="form.completion_date"
+                            class="cally"
+                            wire:model="form.completion_date"
                             wire:ignore
                             onchange="document.querySelector('#cally-{{$task->id}}').textContent = this.value"
                             wire:change="dispatchSelf('completion_date_change', [$event.target.value])"

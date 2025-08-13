@@ -25,4 +25,3 @@ Route::get("/register-success", RegisterSuccessView::class);
 // auth
 Route::post("/login", [LoginController::class, "authenticate"]);
 Route::post("/register", [RegisterController::class, "register"]);
-

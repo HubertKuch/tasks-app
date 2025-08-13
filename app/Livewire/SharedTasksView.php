@@ -15,7 +15,7 @@ class SharedTasksView extends Component
     public function mount($shareHash): void
     {
         if (auth()->check()) {
-            $this->redirect('/');
+            redirect('/', 301);
         }
 
         $this->shareHash = $shareHash;
@@ -26,11 +26,15 @@ class SharedTasksView extends Component
             $this->redirect('/not-found');
         }
 
-        $tasks = Task::whereIn('id', $shareEntity->tasks)
-            ->get()
-            ->groupBy('status');
+        $query = match ($shareEntity->show_all) {
+            true => Task::where('user_id', $shareEntity->user_id),
+            false => Task::whereIn('id', $shareEntity->tasks)
+        };
+
+        $tasks = $query->get()->groupBy('status');
 
         $this->state = [
+            "count" => $query->count(),
             "done_tasks" => $tasks[TaskStatus::Done->value] ?? [],
             "todo_tasks" => $tasks[TaskStatus::ToDo->value] ?? [],
             "in_progress_tasks" => $tasks[TaskStatus::InProgress->value] ?? [],
