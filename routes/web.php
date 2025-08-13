@@ -7,6 +7,7 @@ use App\Livewire\LoginView;
 use App\Livewire\MainView;
 use App\Livewire\RegisterSuccessView;
 use App\Livewire\RegisterView;
+use App\Livewire\SharedTasksView;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([AuthMiddleware::class])->group(function () {
@@ -14,6 +15,8 @@ Route::middleware([AuthMiddleware::class])->group(function () {
 
     Route::get('/logout', [LoginController::class, 'logout']);
 });
+
+Route::get('/shared-tasks/{shareHash}', SharedTasksView::class);
 
 Route::get('/login', LoginView::class);
 Route::get('/register', RegisterView::class);

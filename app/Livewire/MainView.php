@@ -18,12 +18,14 @@ class MainView extends Component
         "done_tasks" => [],
         "todo_tasks" => [],
         "in_progress_tasks" => [],
+        "read_only" => false
     ];
+
 
     #[On('refresh')]
     public function refresh(): void
     {
-        $this->reFetchState();
+        $this->reFetchStateWhenNotReadOnly();
     }
 
     #[On("deleteTask")]
@@ -58,13 +60,21 @@ class MainView extends Component
     }
 
 
-    public function mount(): void
+    public function mount($readOnly = false, $state = []): void
     {
-        $this->reFetchState();
+        if (!$readOnly) {
+            $this->reFetchStateWhenNotReadOnly();
+        } else {
+            $this->state = $state;
+        }
     }
 
-    public function reFetchState(): void
+    public function reFetchStateWhenNotReadOnly(): void
     {
+        if ($this->state['read_only']) {
+            return;
+        }
+
         $authedUser = Auth::user();
 
         $this->state = [
