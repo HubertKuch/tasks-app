@@ -11,6 +11,20 @@ function waitForElement(selector, callback) {
     }, 100);
 }
 
+function inView(elm, threshold = 0) {
+    const rect = elm.getBoundingClientRect();
+    const vpWidth = window.innerWidth;
+    const vpHeight = window.innerHeight;
+
+    const above = rect.bottom - threshold <= 0;
+    const below = rect.top - vpHeight + threshold >= 0;
+    const left = rect.right - threshold <= 0;
+    const right = rect.left - vpWidth + threshold >= 0;
+    const inside = !above && !below && !left && !right;
+
+    return {above, below, left, right, inside};
+}
+
 waitForElement("button.toggle-sidebar", (toggler) => {
     const sidebar = document.querySelector("#main-sidebar");
     const expander = document.querySelector(".sidebar__expand");
@@ -37,35 +51,68 @@ waitForElement(".tasks-container", (container) => {
 
     tabs.forEach((item) => {
 
-            item.addEventListener("click", (e) => {
-                tabs.forEach(tab => tab.classList.remove("active-tab"));
+        item.addEventListener("click", (e) => {
+            tabs.forEach(tab => tab.classList.remove("active-tab"));
 
-                const setTo = item.getAttribute("data-set-view");
+            const setTo = item.getAttribute("data-set-view");
 
-                container.setAttribute("data-view", setTo);
+            container.setAttribute("data-view", setTo);
 
-                e.currentTarget.classList.add("active-tab");
-            })
-
+            e.currentTarget.classList.add("active-tab");
         })
+
+    })
 });
 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('details').forEach(details => {
-        details.addEventListener('mouseenter', () => details.setAttribute('open', ''));
-        details.addEventListener('mouseleave', () => details.removeAttribute('open'));
+        const isntInView = inView(details, 100);
+
+        const stayInRight = ['relative', 'right-2'];
+        const stayOnBottom = ['relative', 'bottom-2', 'right-2'];
+
+        details.addEventListener('mouseenter', () => {
+            details.setAttribute('open', '');
+
+            console.log(isntInView.right);
+
+            if (isntInView.right) {
+                details.querySelector('.dropdown-content').classList.add(...stayInRight);
+            }
+
+            if (isntInView.below) {
+                details.querySelector('.dropdown-content').classList.add(...stayOnBottom);
+            }
+        });
+
+        details.addEventListener('mouseleave', () => {
+            details.removeAttribute('open')
+
+            if (isntInView.right) {
+                details.querySelector('.dropdown-content').classList.remove(...stayInRight);
+            }
+
+            if (isntInView.below) {
+                details.querySelector('.dropdown-content').classList.remove(...stayOnBottom);
+            }
+        });
     });
 });
 
 window.TasksApp = window.TasksApp || {};
 
 /**
-* @param {string} type A type like: info, success, warning
-* */
-window.TasksApp.toast = function toast(msg, type = 'info') {
+ * @param {string} type A type like: info, success, warning
+ * */
+window.TasksApp.toast = (msg, type = 'info') => {
     Toastify({
-        text: msg,
-        className: `toast-${type}`,
-        duration: 1500
+        text: msg, className: `toast-${type}`, duration: 1500
     }).showToast();
+}
+
+window.TasksApp.copyToClipboard = (value) => {
+    navigator.clipboard.writeText(value)
+        .then(() => {
+            TasksApp.toast("Link copied to clipboard");
+        });
 }

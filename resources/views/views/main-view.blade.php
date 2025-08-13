@@ -1,5 +1,7 @@
 <div class="app-container w-full h-full flex bg-white min-h-screen">
-    @livewire('side-bar', ['tasksCount' => $state["all_tasks_count"]])
+    @if(auth()->check())
+        @livewire('side-bar', ['tasksCount' => $state["all_tasks_count"]])
+    @endif
 
     <main class="flex-1 flex flex-col h-full">
         @livewire('topbar')
@@ -14,7 +16,7 @@
 
                 <div class="flex flex-col gap-4">
                     @foreach ($state['done_tasks'] as $task)
-                        @livewire('singletask', ['task' => $task], key('done-'.$task->id))
+                        @livewire('singletask', ['task' => $task, 'isReadOnly' => $state['read_only']], key('done-'.$task->id))
                     @endforeach
                 </div>
             </div>
@@ -28,7 +30,7 @@
 
                 <div class="flex flex-col gap-4">
                     @foreach ($state["in_progress_tasks"] as $task)
-                        @livewire('singletask', ['task' => $task], key('in-progress-'.$task->id))
+                        @livewire('singletask', ['task' => $task, "isReadOnly" => $state['read_only']], key('in-progress-'.$task->id))
                     @endforeach
                 </div>
             </div>
@@ -42,10 +44,15 @@
 
                 <div class="flex flex-col gap-4">
                     @foreach ($state["todo_tasks"] as $task)
-                        @livewire('singletask', ['task' => $task], key('todo-'.$task->id))
+                        @livewire('singletask', ['task' => $task, "isReadOnly" => $state['read_only']], key('todo-'.$task->id))
                     @endforeach
                 </div>
             </div>
         </section>
     </main>
+
+    @if(auth()->check())
+        <livewire:task-share-modal/>
+    @endif
+
 </div>
