@@ -192,8 +192,9 @@ $deleteTask = function (Task $taskToDelete) {
                 @endif
             </div>
 
-            <div class="pl-4 cursor-pointer" onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').showModal()">
-                {{$task->description}}
+            <div class="pl-4 cursor-pointer whitespace-pre-line"
+                 onclick="document.querySelector('#dialog_{{$task->id}}_task_modal').showModal()">
+                    {{$task->description}}
             </div>
 
             <div class="text-xs text-gray-500 flex-as-row justify-between gap-1 mt-2">

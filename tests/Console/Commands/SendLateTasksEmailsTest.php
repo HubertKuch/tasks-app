@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
 use App\Models\Task;
-use App\Mail\OverdueTasksMail;
 use Carbon\Carbon;
 
 class SendLateTasksEmailsTest extends TestCase
