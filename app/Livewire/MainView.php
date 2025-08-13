@@ -10,7 +10,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use function Termwind\render;
 
 class MainView extends Component
 {
@@ -53,7 +52,7 @@ class MainView extends Component
     }
 
     #[On("postDeleteTaskFromDom")]
-    public function postDeleteFromDom($taskId)
+    public function postDeleteFromDom($taskId): void
     {
         Task::find($taskId)->deleteQuietly();
     }
