@@ -18,24 +18,34 @@ $generateShare = function () {
         'tasks' => $this->show_all ? null : $this->selected_tasks,
     ]);
 
-    $this->share_link = $share->hash;
+    $baseURL = \Illuminate\Support\Facades\URL::to('/');
+
+    $this->share_link = $baseURL . "/shared-tasks/" . $share->hash;
 };
 
 on([
-    'task-share-modal-open' => fn() => $this->modal_open = true
+    'task-share-modal-open' => fn() => $this->modal_open = true,
+    'task-share-modal-close' => fn() => $this->modal_open = false
 ]);
 
 ?>
 
 <dialog class="modal modal-open:bg-black/40 backdrop-blur-sm" id="share_tasks_modal" {{$modal_open ? "open" : ""}}>
     <form class="modal-box max-w-md rounded-xl bg-base-100 shadow-xl p-6 flex flex-col gap-3">
+    <div class="flex-as-row justify-between">
         <fieldset className="fieldset bg-base-100 border-base-300 rounded-box w-64 border p-4">
-            <legend className="fieldset-legend">Share options</legend>
+            <legend className="fieldset-legend text-xl">Share options</legend>
             <label className="label">
                 <input type="checkbox" wire:model.live="show_all" className="checkbox"/>
                 Share all tasks
             </label>
         </fieldset>
+        <div class="flex-as-row justify-end">
+            <a wire:click="dispatch('task-share-modal-close')" class="cursor-pointer hover-bg text-lg w-8 h-8 text-center">
+                <iconify-icon icon="octicon:x-circle-16" class="inline-icon"></iconify-icon>
+            </a>
+        </div>
+    </div>
 
         @if (!$show_all)
             <div class="flex flex-col gap-2 max-h-48 overflow-y-auto">
@@ -48,7 +58,12 @@ on([
             </div>
         @endif
 
-        <button type="button" class="btn text-white flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500" wire:click="generateShare">Generate Link</button>
+        @if(!$share_link)
+            <button type="button"
+                    class="btn text-white flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                    wire:click="generateShare">Generate Link
+            </button>
+        @endif
 
         @if ($share_link)
             <div class="flex items-stretch gap-2 w-full max-w-xl">
