@@ -8,18 +8,17 @@ state([
     'show_all' => true,
     'selected_tasks' => [],
     'share_link' => null,
-    'modal_open' => false
+    'modal_open' => false,
 ]);
 
 $generateShare = function () {
-
     $share = TaskShare::create([
         'user_id' => auth()->id(),
         'show_all' => $this->show_all,
         'tasks' => $this->show_all ? null : $this->selected_tasks,
     ]);
 
-    $this->share_link = route('share.show', $share->hash);
+    $this->share_link = $share->hash;
 };
 
 on([
@@ -39,7 +38,7 @@ on([
         </fieldset>
 
         @if (!$show_all)
-            <div>
+            <div class="flex flex-col gap-2 max-h-48 overflow-y-auto">
                 @foreach (Task::where('user_id', auth()->id())->get() as $task)
                     <label>
                         <input type="checkbox" value="{{ $task->id }}" wire:model="selected_tasks">
@@ -49,11 +48,28 @@ on([
             </div>
         @endif
 
-        <button wire:click="generateShare">Generate Link</button>
+        <button type="button" class="btn text-white flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500" wire:click="generateShare">Generate Link</button>
 
         @if ($share_link)
-            <div>
-                <input type="text" readonly value="{{ $share_link }}">
+            <div class="flex items-stretch gap-2 w-full max-w-xl">
+                <input
+                    id="share-url"
+                    type="text"
+                    value="{{ $share_link }}"
+                    readonly
+                    class="input input-bordered grow font-mono text-xs sm:text-sm bg-base-100/70 focus:outline-none"
+                />
+
+                <button
+                    type="button"
+                    class="btn btn-primary shrink-0 copy-btn"
+                    data-copy-target="#share-url"
+                    aria-label="Copy link"
+                    onclick="TasksApp.copyToClipboard('{{$share_link}}')"
+                >
+                    <iconify-icon icon="octicon:copy-16" class="w-4 h-4"></iconify-icon>
+                    <span class="hidden sm:inline copy-label">Copy</span>
+                </button>
             </div>
         @endif
     </form>

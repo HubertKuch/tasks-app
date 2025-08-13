@@ -37,17 +37,17 @@ waitForElement(".tasks-container", (container) => {
 
     tabs.forEach((item) => {
 
-            item.addEventListener("click", (e) => {
-                tabs.forEach(tab => tab.classList.remove("active-tab"));
+        item.addEventListener("click", (e) => {
+            tabs.forEach(tab => tab.classList.remove("active-tab"));
 
-                const setTo = item.getAttribute("data-set-view");
+            const setTo = item.getAttribute("data-set-view");
 
-                container.setAttribute("data-view", setTo);
+            container.setAttribute("data-view", setTo);
 
-                e.currentTarget.classList.add("active-tab");
-            })
-
+            e.currentTarget.classList.add("active-tab");
         })
+
+    })
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -60,12 +60,17 @@ document.addEventListener('DOMContentLoaded', () => {
 window.TasksApp = window.TasksApp || {};
 
 /**
-* @param {string} type A type like: info, success, warning
-* */
-window.TasksApp.toast = function toast(msg, type = 'info') {
+ * @param {string} type A type like: info, success, warning
+ * */
+window.TasksApp.toast = (msg, type = 'info') => {
     Toastify({
-        text: msg,
-        className: `toast-${type}`,
-        duration: 1500
+        text: msg, className: `toast-${type}`, duration: 1500
     }).showToast();
+}
+
+window.TasksApp.copyToClipboard = (value) => {
+    navigator.clipboard.writeText(value)
+        .then(() => {
+            TasksApp.toast("Link copied to clipboard");
+        });
 }
