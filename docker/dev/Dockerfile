@@ -11,6 +11,7 @@ WORKDIR /app
 
 COPY ../.. .
 RUN composer install
+RUN php artisan key:generate
 
 FROM oven/bun:latest as vite
 
