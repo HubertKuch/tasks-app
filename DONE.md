@@ -1,0 +1,1 @@
+Wykonane zostalo wszystko procz: Integracja z Google Calendar, poniewaz wymaga ona klucza od uzytkownika. Wymagaloby to integracji z oauth2 czego projekt nie przewiduje.
