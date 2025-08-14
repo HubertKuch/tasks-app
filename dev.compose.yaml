@@ -1,0 +1,56 @@
+services:
+  vite:
+    build:
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
+      target: vite
+    container_name: vite-serve
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+    networks:
+      - todo_network
+    working_dir: /app
+  app:
+    build:
+      target: server
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
+    container_name: todo-server
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      mysql:
+        condition: service_healthy
+      vite:
+        condition: service_started
+    networks:
+      - todo_network
+    entrypoint: ['/usr/bin/sh', '-c', './docker/dev/entrypoint.sh']
+    working_dir: /app
+  mysql:
+    image: mysql:latest
+    container_name: todo-db
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    networks:
+      - todo_network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent" ]
+      interval: 5s
+      timeout: 3s
+      retries: 2
+      start_period: 0s
+networks:
+  todo_network:
